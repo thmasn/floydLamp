@@ -6,6 +6,15 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Floyd Lamp</title>
         <link rel="stylesheet" href="floyd.css">
+        
+        <!--icons and stuff for web app-->
+        <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
+        <link rel="manifest" href="site.webmanifest">
+        <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#4d4d4d">
     </head>
     <body>
         
@@ -47,50 +56,6 @@
                     <div class="fill"></div>
                 </div>
                 <div class="icon"></div>
-            </div>
-        </div>
-        <div id="timeline" style="display: none">
-            <div class="line"></div>
-            <div id="add" class="icon button"></div>
-            <div id="time">
-                <div class="line"></div>
-                <div class="text">12:00</div>
-            </div>
-            
-            <div class="point" id="p1">
-                <div class="icon button"></div>
-                <div class="line"></div>
-                <div class="symbol"></div>
-                <div class="line"></div>
-                <div class="text">12:00</div>
-            </div>
-            <div class="point" id="p2">
-                <div class="icon button"></div>
-                <div class="line"></div>
-                <div class="symbol"></div>
-                <div class="line"></div>
-                <div class="text">12:00</div>
-            </div>
-            <div class="point" id="p3">
-                <div class="icon button"></div>
-                <div class="line"></div>
-                <div class="symbol"></div>
-                <div class="line"></div>
-                <div class="text">12:00</div>
-            </div>
-            <div class="point" id="p4">
-                <div class="icon button"></div>
-                <div class="line"></div>
-                <div class="symbol"></div>
-                <div class="line"></div>
-                <div class="text">12:00</div>
-            </div>
-            <div class="point" id="p5">
-                <div class="icon button"></div>
-                <div class="line"></div>
-                <div class="symbol"></div>
-                <div class="line"></div>
-                <div class="text">12:00</div>
             </div>
         </div>
         <div id="color" style="display:none;">
@@ -307,7 +272,6 @@
                 if(currentPoint != null)
                     currentPoint.b = brightness;
                 
-                //updateCurrentPoint();
 				send("#B" + Math.round(value*255) + "#");
                 updateSliders();
             }
@@ -320,7 +284,6 @@
                     currentPoint.s = speed;
                 
 				send("#S" + Math.round(value*255) + "#");
-                //updateCurrentPoint();
                 updateSliders();
             }
             else if(currentDragging.startsWith("p")){
@@ -361,25 +324,6 @@
             document.getElementById("brightness").addEventListener("touchstart", md);
             document.getElementById("speed").addEventListener("mousedown", md);
             document.getElementById("speed").addEventListener("touchstart", md);
-            
-            /*var t = document.getElementById("time");
-            var d = new Date();
-            t.getElementsByClassName("text")[0].innerHTML = d.getHours() + ":" + d.getMinutes();
-            t.style.left = "calc(" + timeToValue(d)*100 + "% - 50px)";
-            
-            points.push(point("p1",  6, 40,  0, .3));
-            points.push(point("p2", 11, 20, .5, .5));
-            points.push(point("p3", 14, 20, .7, .3));
-            points.push(point("p4", 19, 20, .5, .3));
-            points.push(point("p5", 22, 20,  0, .1));
-            points.forEach(function(p, i){
-                p.div.addEventListener("mousedown", function(e){
-                    selectPoint(p);
-                    md(e);
-                });
-                updatePoint(p);
-            });
-            console.log(points);*/
             
             var wheel = document.getElementById("wheel");
             document.getElementById("wheel").addEventListener("mousedown", md);
@@ -509,43 +453,8 @@
         function clamp(x){
             return Math.max(Math.min(x, 1), 0);
         }
-		
-		
-        /*//point functions
-        function point(id, timeH, timeM, brightness, speed, c1, c2, c3){
-            var p = {};
-            p.id = id;
-            p.div = document.getElementById(id);
-            p.b = brightness;
-            p.s = speed;
-            p.tH = timeH;
-            p.tM = timeM;
-            p.c1 = c1;
-            p.c2 = c2;
-            p.c3 = c3;
-            return p;
-        }
-        function updateCurrentPoint(){
-            if(currentPoint != null)
-                updatePoint(currentPoint);
-        }
-        function updatePoint(p){
-            p.div.style.left = "calc(" + HMToValue(p.tH, p.tM)*100 + "% - 20px)";
-            p.div.getElementsByClassName("symbol")[0].style.backgroundColor = "rgb(" + p.b*255+","+ p.b*255+","+ p.b*255+ ")";
-            p.div.getElementsByClassName("text")[0].innerHTML = p.tH + ":" + p.tM;
-        }
-        function selectPoint(p){
-            if(currentPoint != null)
-                currentPoint.div.classList.remove("selected");
-            currentPoint = p;
-            currentPoint.div.classList.add("selected");
-            brightness = p.b;
-            speed = p.s;
-            updateSliders();
-        }
-		*/
-        
-        
         
     </script>
+    <!--service worker to cache files-->
+    <script src="companion.js" data-service-worker="sw.js"></script>
 </html>
