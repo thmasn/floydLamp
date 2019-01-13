@@ -12,9 +12,9 @@
         <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
         <link rel="manifest" href="site.webmanifest">
-        <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#5bbad5">
-        <meta name="msapplication-TileColor" content="#da532c">
-        <meta name="theme-color" content="#4d4d4d">
+        <link rel="mask-icon" href="icons/safari-pinned-tab.svg" color="#141414">
+        <meta name="msapplication-TileColor" content="#141414">
+        <meta name="theme-color" content="#141414">
     </head>
     <body>
         
@@ -30,9 +30,11 @@
 			<div id="close"class="btn">Close</div>
 		</div>
 	</div>
+        
     <div id="EnterTheVoid">
 	    <div id="enter" class="btn">Connect</div>
 	</div>
+        
 	<div id="mainScreen">
         <div id="burger" class="icon button"></div>
         <div id="refresh" class="icon button"></div>
@@ -44,9 +46,8 @@
                 <div class="icon"></div>
             </div>
             <div id="triangle">
-                <div class="c" id="cC"></div>
-                <div class="c" id="cB"></div>
-                <div class="c" id="cA"></div>
+                <div id="gradient"></div>
+                <div class="overlay"></div>
                 <div id="btnA" class="button"></div>
                 <div id="btnB" class="button"></div>
                 <div id="btnC" class="button"></div>
@@ -248,22 +249,25 @@
         
         var brightness = .5;
         var speed = .5;
+        var colors = {
+            A:{hue:0,sat:1},
+            B:{hue:.3,sat:1},
+            C:{hue:.6,sat:1}
+        };
         
-        var points = [];
-        var currentPoint;
+        var currentColor;         //current color name: A | B | C
+		var lastSelectedColor;    //last color picked by the color picker
         
-        var currentColor;
-		var lastSelectedColor;
-        
-        var currentDragging = "";
+        var currentDragging = ""; //currently dragged object ID
         
         //drag events
         function mm(e){
             if(currentDragging == "") return;
-            console.log(currentDragging);
+            
 			var isTouch = e.type == "touchstart" || e.type == "touchmove";
 			var x = isTouch? e.touches[0].clientX: e.clientX;
 			var y = isTouch? e.touches[0].clientY: e.clientY;
+            
             if(currentDragging == "brightness"){
                 var sliderLine = document.getElementById("brightness").getElementsByClassName("line")[0];
                 
@@ -286,12 +290,6 @@
 				send("#S" + Math.round(value*255) + "#");
                 updateSliders();
             }
-            else if(currentDragging.startsWith("p")){
-                var newT = valueToHM(relXPos(x));
-                currentPoint.tH = newT.H;
-                currentPoint.tM = newT.M;
-                updatePoint(currentPoint);
-            }
             else if(currentDragging == "wheel"){
 				lastSelectedColor = posTohs(x, y);
                 document.getElementById("wheel").style.borderColor = hsToCss(lastSelectedColor);
@@ -300,16 +298,16 @@
 		
         function md(e){
             currentDragging = e.target.id;
-            if(!currentDragging.startsWith("p"))
-                mm(e);
+            mm(e);
         }
         function mu(){
             if(currentDragging == "wheel"){
                 document.getElementById("color").style.display = "none";
                 document.getElementById("wheel").style.borderColor = "white";
 				
+                colors[currentColor] = lastSelectedColor;
 				send(hsToCmd(lastSelectedColor, currentColor));
-				document.getElementById("c" + currentColor).style.filter = hsToFilter(lastSelectedColor);
+                updateGradient();
             }
             currentDragging = "";
         }
@@ -339,6 +337,12 @@
             document.getElementById("brightness").getElementsByClassName("line")[0].getElementsByClassName("fill")[0].style.height = (1-brightness)*100 + "%";
             document.getElementById("speed").getElementsByClassName("line")[0].getElementsByClassName("fill")[0].style.height = (1-speed)*100 + "%";
         }
+        function updateGradient(){
+            var cola = hsToCss(colors["A"]);
+            var colb = hsToCss(colors["B"]);
+            var colc = hsToCss(colors["C"]);
+            document.getElementById("gradient").style.background = "linear-gradient(180deg, " + cola + ", rgba(0,0,0,0)), linear-gradient(90deg, " + colc + ", " + colb + ")";
+        }
         function editColor(e, ID){
             currentColor = ID;
             document.getElementById("color").style.display = "block";
@@ -354,7 +358,8 @@
 				var hue = parts[0].substr(3,parts[0].length-3);
 				var sat = parts[1].substr(3,parts[1].length-3);
 				var hs = {hue:hue/255, sat:sat/255};
-				document.getElementById("c" + tgtColor).style.filter = hsToFilter(hs);
+				colors[tgtColor] = hs;
+                updateGradient();
 			}
 			else if(firstChar == "B"){
 				brightness = string.substr(1,string.length-1)/255;

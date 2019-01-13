@@ -19,7 +19,7 @@ body {
 	position:absolute;
 	top:0;
 	bottom:0;
-	left:0;
+	right:0;
 	width:250px;
 	z-Index:10;
 }
@@ -91,15 +91,15 @@ form .btn{ background: #4d4d6d; }
 #burger{
     position:absolute;
     top:15px;
-    left:15px;
+    right:15px;
     background-image: url(images/floydlampApp4-11.png);
-	z-Index: 9;
+    z-index:9;
 }
 #refresh{
     position: absolute;
     top:15px;
-    right:15px;
-    background-image: url(images/floydlampApp4-12.png);
+    left:15px;
+    background-image: url(images/floydlampApp4-22.png);
 }
 .icon{
     width:50px;
@@ -172,24 +172,24 @@ form .btn{ background: #4d4d6d; }
     width:100%;
     height:100%;
 }
-#triangle .c{
+#triangle #gradient{
     position: absolute;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
+    left:2%;
+    right:2%;
+    top:2%;
+    bottom:2%;
+    background: linear-gradient(180deg, green, rgba(255,0,0,0)),
+    			linear-gradient(90deg, yellow, red);
 }
-#triangle #cA{
-    background-image: url(images/floydlampApp4-15.png);
-    filter: saturate(0%) brightness(500%);
-}
-#triangle #cB{
-    background-image: url(images/floydlampApp4-16.png);
-    filter: hue-rotate(60deg) brightness(300%);
-}
-#triangle #cC{
-    background-image: url(images/floydlampApp4-17.png);
-    filter: hue-rotate(120deg) brightness(200%);
+#triangle .overlay{
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom:0;
+	background: url('images/floydlampApp4-21.svg');
+	background-size: contain;
+	background-repeat: no-repeat;
 }
 #triangle .button{
     position: absolute;
