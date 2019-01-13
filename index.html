@@ -273,8 +273,6 @@
                 
                 var value = relYPos(sliderLine, y);
                 brightness = value;
-                if(currentPoint != null)
-                    currentPoint.b = brightness;
                 
 				send("#B" + Math.round(value*255) + "#");
                 updateSliders();
@@ -284,8 +282,6 @@
                 
                 var value = relYPos(sliderLine, y);
                 speed = value;
-                if(currentPoint != null)
-                    currentPoint.s = speed;
                 
 				send("#S" + Math.round(value*255) + "#");
                 updateSliders();
